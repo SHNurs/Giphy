@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="input-group">
+            <input id="searchInput" type="text" class="form-control" placeholder="Search for the gifs">
+            <button class="btn" id="searchButton" onclick="sendApiRequest()">Search</button>
+        </div>
+        <div id="gifs"></div>
+    </div>
+</body>
+<script>
+    const GIPHY_KEY = 'WaMwcAa3YP9bpFSbJFBspw3V7HAI4wCh';
+
+    function sendApiRequest(){
+        let inputVal = document.getElementById('searchInput').value;
+        let div = document.getElementById('gifs');
+        div.textContent = '';
+
+        fetch(`https://api.giphy.com/v1/gifs/search?q=${inputVal}&api_key=${GIPHY_KEY}&limit=20`)
+            .then(response => response.json())
+            .then(result => {
+                result.data.forEach(element => {
+                    let imgPath = element.images.fixed_height.url;
+                    let img = document.createElement('img');
+                    img.className = 'gif';
+                    img.setAttribute('src', imgPath);
+                    div.appendChild(img);
+            });
+        })
+    }
+
+</script>
+</html>
